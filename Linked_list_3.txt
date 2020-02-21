@@ -1,0 +1,149 @@
+#include<stdio.h>
+#include<stdlib.h>
+//#define swap(a,b) do{int t; t=a; a=b ; b=t;}while(0);
+
+typedef struct _list List;
+
+struct _list 
+{
+	int key;
+	struct _list *next;
+};
+
+List *head, *tail; //전역변수
+
+void init_list(void)
+{
+	head = (List*)malloc(sizeof(List));
+	tail = (List*)malloc(sizeof(List));
+	head->next = tail;
+	tail->next = tail;
+}
+
+
+void insert_list(int data)
+{
+	List * nw;
+	nw = (List *)malloc(sizeof(List));
+	nw->key = data;
+
+	nw->next = head->next;
+	head->next = nw;
+}
+
+void view_list(void)
+{
+	List*wk = head->next;
+	while (wk!=tail)
+	{
+		printf("%d\n", wk->key);
+		wk = wk->next;
+	}
+
+	//List * wk;
+	//wk = head->next;
+	//printf("%d\n", wk->key);
+
+	//wk = wk->next;
+	//printf("%d\n", wk->key);
+
+	//wk = wk->next;
+	//printf("%d\n", wk->key);
+}
+
+void delete_list(void)
+{
+	List*del;
+	del = head->next;
+	head->next = del->next;
+	free(del);
+
+}
+
+void find_list(int fd)
+{
+	//찾으면 있다.
+	//없으면 없다 출력
+
+	List*wk = head->next;
+	while (wk != tail && fd != wk->key) //마지막 기둥이 아니고 찾는 값이 없다면 
+	{
+		wk = wk->next; // 옆으로 가겠다.
+	}
+	if (fd == wk->key)
+	{
+		printf("%d 있다.\n", fd);
+		
+	}
+	if(wk == tail)
+	{
+		printf("%d 없다.\n", fd);
+	}
+	
+
+}
+
+void delete_all_list(void)
+{
+	List*del, * fdel; 
+	del = head->next;
+	
+	while(del != tail) 
+	{
+		fdel = del;
+		del = del->next;
+		free(fdel);
+	}
+	head->next = tail;
+}
+
+void ordered_list(int gd)  // 순서에 맞게 넣기 
+{
+	List * grn;
+	List * nw = (List *)malloc(sizeof(List));
+	grn = head;
+
+	while (grn->next->key < gd && grn->next != tail)
+	{
+		grn = grn->next;
+	}
+	nw->key = gd;
+	nw->next = grn->next;
+	grn->next = nw;
+}
+
+int main(void)
+{
+	init_list(); //초기화 함수 호출
+	insert_list(1);
+	insert_list(2);
+	insert_list(3);
+	
+
+
+	view_list();
+	/*
+	delete_list();
+	printf("----------\n");
+	view_list();
+	*/
+
+	printf("----------\n");
+
+	find_list(2); //찾기 함수 
+	printf("----------\n");
+
+	delete_all_list();
+	view_list();
+
+	printf("----------\n");
+
+	
+	ordered_list(8); //
+	ordered_list(3); //
+	ordered_list(5); //
+	ordered_list(2); //
+
+	view_list();
+}
+

@@ -1,0 +1,62 @@
+#include<stdio.h>
+#include<stdlib.h>
+//#define swap(a,b) do{int t; t=a; a=b ; b=t;}while(0);
+
+typedef struct _list List;
+
+struct _list 
+{
+	int key;
+	struct _list *next;
+};
+
+List *head, *tail; //전역변수
+
+void init_list(void)
+{
+	head = (List*)malloc(sizeof(List));
+	tail = (List*)malloc(sizeof(List));
+	head->next = tail;
+	tail->next = tail;
+}
+
+
+void insert_list(int data)
+{
+	List * nw;
+	nw = (List *)malloc(sizeof(List));
+	nw->key = data;
+
+	nw->next = head->next;
+	head->next = nw;
+}
+
+void view_list(void)
+{
+	List*wk = head->next;
+	while (wk!=tail)
+	{
+		printf("%d ", wk->key);
+		wk = wk->next;
+	}
+
+	//List * wk;
+	//wk = head->next;
+	//printf("%d\n", wk->key);
+
+	//wk = wk->next;
+	//printf("%d\n", wk->key);
+
+	//wk = wk->next;
+	//printf("%d\n", wk->key);
+}
+
+main()
+{
+	init_list(); //초기화 함수 호출
+	insert_list(3);
+	insert_list(2);
+	insert_list(1);
+
+	view_list();
+}

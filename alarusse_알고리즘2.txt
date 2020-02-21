@@ -1,0 +1,33 @@
+#include<stdio.h>
+//#include<stdlib>
+
+int alarusse(int a, int b)
+{
+	
+	int sum = 0;
+
+	while(a>0)
+	{
+		if (a&0x1) //홀수 일 때
+		{
+			sum += b;
+		}
+		else
+		{
+			a >>= 1; //a = a/2;
+			b <<= 1; //b = b*2;
+		}
+		
+	}
+	return sum;
+	
+}
+
+
+int main(void)
+{
+
+	
+	printf("%d ", alarusse(27, 65));
+	
+}

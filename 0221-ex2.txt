@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<stdlib.h>
+//#define swap(a,b) do{int t; t=a; a=b ; b=t;}while(0);
+
+int main()
+{
+	char a;
+	scanf_s("%c", &a);
+	while (a <= 'z')
+	{
+		printf("%c",a);
+		a++;
+	}
+}

@@ -1,0 +1,150 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<windows.h>
+#include<stdlib.h>
+#include<time.h>
+//#define swap(a,b) do{int t; t=a; a=b ; b=t;}while(0);
+//     srand(time(NULL); //rand()함수의 위치 변경
+//     rand();           //random값 추출
+typedef struct _list List;
+
+struct _list
+{
+	int key;
+	struct _list *next;
+};
+List *head, *tail;
+
+void init_list(void)
+{
+	head = (List*)malloc(sizeof(List));
+	tail = (List*)malloc(sizeof(List));
+	head->next = tail;
+	tail->next = tail;
+}
+
+void insert_list(int data)
+{
+	List * nw;
+	nw = (List *)malloc(sizeof(List));
+	nw->key = data;
+
+	nw->next = head->next;
+	head->next = nw;
+}
+
+void view_list(void)
+{
+	List*wk = head->next;
+	while (wk != tail)
+	{
+		
+
+		printf("%d ", wk->key);
+		wk = wk->next;
+	}
+
+	//List * wk;
+	//wk = head->next;
+	//printf("%d\n", wk->key);
+
+	//wk = wk->next;
+	//printf("%d\n", wk->key);
+
+	//wk = wk->next;
+	//printf("%d\n", wk->key);
+}
+
+void delete_list(void)
+{
+	List*del;
+	del = head->next;
+	head->next = del->next;
+	free(del);
+
+}
+
+void delete_all_list(void)
+{
+	List*del, *fdel;
+	del = head->next;
+
+	while (del != tail)
+	{
+		fdel = del;
+		del = del->next;
+		free(fdel);
+	}
+	head->next = tail;
+}
+
+void ordered_list(int gd)  // 순서에 맞게 넣기 
+{
+	List * grn;
+	List * nw = (List *)malloc(sizeof(List));
+	grn = head;
+
+	
+	while (grn->next->key < gd && grn->next != tail)
+	{
+		grn = grn->next; //숫자가 작다면 옆으로 옮긴다. 
+
+	}
+
+	if (grn->next->key == gd) //중복이면 삭제 
+	{
+		printf("중복 \n ");
+		delete_list();
+
+	}
+	nw->key = gd;  //끼워 넣기 
+	nw->next = grn->next;
+	grn->next = nw;
+
+
+}
+
+void movetofron()
+{
+	printf("맨 앞쪽으로 옮겨야 하는 정보를 입력하시오 : ");
+
+}
+
+void transposeMethod()
+{
+	printf("앞노드와 바꿔야 하는 정보를 입력하시오 : ");
+
+}
+
+
+int main()
+{
+	int rnum,i;
+	init_list();
+	srand(time(NULL));
+	
+	
+	for(i=0; i<10 ; i++) //10개 뽑아 순서대로 넣기 
+	{
+		
+		rnum = rand() % 10;
+
+		ordered_list(rnum);
+		view_list();
+		//system("cls");
+		printf("\n"); //
+
+	}
+	printf("출력 : ");
+	view_list();
+	printf("\n완성되었습니다.");
+
+	while (1)
+	{
+		//printf("출력 : ");
+		/*
+		movetofron();
+		transposeMethod();
+		*/
+	}
+}
