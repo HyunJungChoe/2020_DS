@@ -1,0 +1,121 @@
+
+//구조체
+//품목 단가 판매량  총액
+//i_name i_price i_count i_amount
+
+typedef struct _item {
+    char i_name[20];
+    int i_price;
+    int i_count;
+    int i_amount;
+    struct _item* next;
+}Item;
+Item* head, * tail;
+
+void init_item(void)
+{
+    head = (Item*)malloc(sizeof(Item));
+    tail = (Item*)malloc(sizeof(Item));
+    head->next = tail;
+}
+int menu_select(void)
+{
+	puts("==== = M E N U  ==== =");
+	puts("1. 매출현황 출력");
+	puts("2. 매출현황 내보내기");
+	puts("3. 상품 찾기");
+	puts("4. 상품 삭제");
+	puts("5. 매출현황 배열");
+	puts("6. 정렬");
+	puts("7. 종료");
+	puts("==================== =");
+    int sel;
+    scanf("%d", &sel);
+    return sel;
+      
+}
+void insert_list(char* in, int ip)
+{
+    Item* nw;
+    nw = (Item*)malloc(sizeof(Item));//만든노드에
+    strcpy(nw->i_name, in); //품명복사
+    nw->i_price = ip; //품가 복사
+
+    nw->next = head->next;//head의 뒤쪽에 넣어주네..
+    head->next = nw;
+}
+void view_list(void)
+{
+    Item* wk;
+    wk = head->next;
+    while (wk != tail)
+    {
+        printf("%s %d\n", wk->i_name, wk->i_price);
+        wk = wk->next;
+    }
+}
+void view_list2(void)
+{
+    Item* wk;
+    wk = head->next;
+    while (wk != tail)
+    {
+        printf("%20s %7d", wk->i_name, wk->i_price);
+        printf("%7d %7d\n", wk->i_count, wk->i_amount);
+        wk = wk->next;
+    }
+}
+void find_and_update(char *sn, int sc)
+{
+    Item* wk;
+    wk = head->next;
+
+    while (strcmp(wk->i_name, sn)!=0 && wk != tail) {
+        wk = wk->next;
+    }
+    if (wk != tail) //찾았다는 의미 : 업데이트(판매대수, 총액)
+    {
+        wk->i_count = sc; //판매대수
+        wk->i_amount = wk->i_price * sc; //총액
+    }
+    else
+    {
+        puts("없는 품목");
+    }
+}
+main()
+{
+    int sel;
+    init_item(); //초기화
+    //item.txt을 모두 읽어 링크드 리스트 만들기
+    FILE* fr;
+    char iname[20];
+    int iprice;
+    fr = fopen("item.txt", "r");
+    while (1) {
+        if (fscanf(fr, "%s %d", iname, &iprice) == -1)
+            break;        
+        insert_list(iname, iprice);//하나씩 노드생성
+        //printf("%s %d\n", iname, iprice);
+    }
+    fclose(fr);
+    //view_list();
+    //sales.txt을 읽어서 기존의 링크에 update
+    char sname[20];
+    int scount;
+    fr = fopen("sales.txt", "r");
+    while (1) {
+        if (fscanf(fr, "%s %d", sname, &scount) == -1)
+            break;
+        //item을 읽어서 만든 리스트 목록에 
+        //같은 아이템명을 찾아서 해당 노드를 업데이트
+        find_and_update(sname, scount);//품목, 팔린개수
+        //printf("%s %d\n", sname, scount);
+    }
+    fclose(fr);
+    view_list2();
+    while (1) {
+        sel = menu_select();
+    }
+
+}

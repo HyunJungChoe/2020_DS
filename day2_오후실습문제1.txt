@@ -1,0 +1,146 @@
+더블링크드 리스트를
+
+typedef struct _list List;
+
+struct _list{
+ int key;
+ struct _list *prev;
+ struct _list *next;
+};
+List *head , *tail;
+
+head와 tail 사이에 노드를
+1. 정렬삽입, 
+2.검색후삭제,
+3.모든 노드출력(head->tail버젼,  tail->head버젼)하는 함수를 완성하시오.
+
+
+
+---------------------------------------------------------------
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+typedef struct _list List;
+
+struct _list {
+	int key;
+	struct _list *prev;
+	struct _list *next;
+};
+List *head, *tail,*new;
+
+
+void init_dllist(void)  //초기화 
+{
+	head = (List*)malloc(sizeof(List));
+	tail = (List*)malloc(sizeof(List));
+	head->next = tail;
+	head->prev = head;
+	tail->next = tail;
+	tail->prev = head;
+
+}
+
+void insert_list(int nm)
+{
+	List *new, *grn;
+	new = (List*)malloc(sizeof(List));
+	grn = head;
+
+	//정렬
+	while (grn->next->key < nm && grn->next != tail)
+	{
+		grn = grn->next; //숫자가 작다면 옆으로 옮긴다. 
+
+	}
+	
+	//삽입 
+	new->key = nm;
+	head->next->prev = new;
+	new->next = grn->next;
+	grn->next = new;
+	new->prev = head;
+
+	printf("%d", new->key);
+	
+
+}
+
+
+void view_list(void)
+{
+	List*wk = head->next;
+	while (wk != tail)
+	{
+
+		printf("%d ", wk->key);
+		wk = wk->next;
+	}
+
+}
+
+void del_list(int nm)
+{
+	List *new, *grn;
+	new = (List*)malloc(sizeof(List));
+	grn = head;
+
+	//검색
+	while (grn->next->key != nm && grn->next != tail )
+	{
+		grn = grn->next; 
+	
+	}
+	new->next = grn->next;
+	grn->next->prev = new;
+	grn->next = new;
+	new->prev = grn;
+
+
+	//
+	/*grn->next->prev = new->prev;
+	grn->prev->next = grn->next;*/
+
+
+	//if (grn->next->key == nm) //숫자가 같다면
+	//{
+	//	//삭제 
+	//	new->next->prev = new->prev;
+	//	new->prev->next = new->next;
+	//}
+	//else
+	//	printf("숫자 없음");
+
+	
+	
+	
+}
+
+int main(void)
+{
+	//int dx;
+
+	init_dllist();
+	insert_list(3);
+	insert_list(2);
+	insert_list(6);
+	insert_list(1);
+	printf("\n");
+	
+
+	
+	printf("정렬 삽입 : \n");
+	view_list();
+	printf("\n");
+
+
+	printf("===========\n");
+	printf("검색 삭제  : \n");
+	
+	del_list(6);
+	view_list();
+	
+}
+
