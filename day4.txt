@@ -1,0 +1,95 @@
+
+================================================================================
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct _tree Tree;
+struct _tree {
+	int key;
+	struct _tree * left;
+	struct _tree * right;
+
+};
+
+void preorder(Tree *p) //프린트문 위치에 따라 전위
+{
+	
+	
+	if (p != NULL)
+	{
+		printf("%d ", p->key);
+		preorder(p->left);
+		preorder(p->right);
+
+	}
+}
+
+void inorder(Tree *p) //프린트문 위치에 따라 중위 //트리 정렬 (왼쪽이 자기보다 작고, 오른쪽은 자기보다 크다)
+{
+	
+
+	if (p != NULL)
+	{
+		
+		inorder(p->left);
+		printf("%d ", p->key);
+		inorder(p->right);
+
+	}
+}
+
+void postorder(Tree *p) //프린트문 위치에 따라 후위
+{
+	
+
+	if (p != NULL)
+	{
+
+		postorder(p->left);
+		
+		postorder(p->right);
+		printf("%d ", p->key);
+
+	}
+}
+
+main()
+{
+	Tree a = { 1,NULL,NULL }, b = { 2 ,NULL,NULL }, c = { 3 ,NULL,NULL }, d = { 4 ,NULL,NULL }, e = { 5 ,NULL,NULL }, f = { 6 ,NULL,NULL };
+	c.left = &a; //					c(3)
+	a.right = &b;//		a(1)					d(4)
+	c.right = &d;//			b(2)					f(6)
+	d.right = &f;//								e(5)
+	f.left = &e;//
+
+	preorder(&c); //전위
+	puts("");
+	inorder(&c); //중위
+	puts("");
+	postorder(&c); // 후위
+	puts("");
+	//levelorder(&c); //층별
+
+
+
+}
+
+=================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
