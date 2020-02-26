@@ -1,0 +1,164 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+#include<windows.h>
+
+//스택
+//#define STACK_SIZE 5 
+//int top;
+//int Stack[STACK_SIZE];
+
+//큐
+#define QUEUE_SIZE 5 
+int front, rear;
+int Queue[QUEUE_SIZE];
+
+void init_queue()
+{
+	front = 0;
+	rear = 0;
+	puts("큐 초기화\n");
+}
+
+void clear_queue()
+{
+	front = rear;
+	puts("모든 노드 삭제 완료\n");
+}
+
+void put(int data) //데이터 넣을 때
+{
+	
+	
+	if ( front == rear + 1 )
+	{
+		printf("\n Queue Overflow\n");
+		return ; // void 함수 그냥 종료
+	}
+
+	Queue[rear++] = data;
+	
+	if (rear == 5)
+	{
+		rear = 0;
+	}
+	
+	printf("성공! ");
+	printf("%d 추가\n", data);
+
+	
+
+}
+
+void get(void) //꺼낼 때
+{
+	int save;
+
+	if (rear  == front)
+	{
+		puts("\n 비었음");
+		return -1;
+	}
+
+	save = front;
+	front = ++front % 5;
+	
+	puts("성공! 삭제완료 \n");
+	return Queue[save];
+
+
+}
+
+int menu(void)
+{
+	int a;
+
+	printf("\n\n\n\n");
+
+	printf("=========================\n");
+	printf("1. INIT     ");
+	printf("2. PUT      ");
+	printf("3. GET      ");
+	printf("4. CLEAR    ");
+	printf("0. EXIT   \n");
+	printf("# 번호를 선택하시오 :  ");
+	scanf("%d", &a);
+
+	return a;
+
+}
+
+void view()
+{
+	
+	
+	//int arr[5] = { NULL,NULL,NULL,NULL,NULL};
+	char arrF[5] = { ' ',' ',' ',' ',' ' };
+	char arrR[5] = { ' ',' ',' ',' ',' ' };
+	arrF[front] = 'F';
+	arrR[rear] = 'R';
+
+	printf("=========================\n");
+	printf("0  1  2  3  4\n");
+	printf("[%d] [%d] [%d] [%d] [%d]\n", Queue[0], Queue[1], Queue[2], Queue[3], Queue[4]);
+	printf("%3c %3c %3c %3c %3c\n", arrF[0], arrF[1], arrF[2], arrF[3], arrF[4]);
+	printf("%3c %3c %3c %3c %3c\n", arrR[0], arrR[1], arrR[2], arrR[3], arrR[4]);
+
+	//puts(arrF); puts(arrR);
+
+
+}
+
+
+int main()
+{
+	int a;
+	int rnum;
+	
+	srand(time(NULL));
+	
+	int t = 1;
+	while (t) {
+		a=menu();
+		switch(a)
+		{
+		case 1:
+			
+			init_queue();
+			view();
+			
+			continue;
+
+		case 2:
+			
+			rnum = rand() % 10;
+			put(rnum);
+			view();
+			
+			continue;
+
+		case 3:
+			
+			get();
+			view();
+			continue;
+
+
+		case 4:
+			
+			clear_queue();
+			view();
+			continue;
+
+		case 0:
+			
+			puts("종료");
+			t = 0;
+			break;
+		}
+	}
+
+}
+
+

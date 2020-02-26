@@ -1,0 +1,144 @@
+============   스택      ===============
+===================================
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define STACK_SIZE 5 
+int top;
+int Stack[STACK_SIZE];
+
+void init_stack()
+{
+	top = -1;
+}
+
+void push(int data)
+{
+	if (top >= STACK_SIZE - 1)
+	{
+		puts("x");
+		return;
+	}
+	Stack[++top] = data;
+
+}
+
+int pop(void)
+{
+	if (top <= -1)
+	{
+		puts("X");
+		return -1;
+	}
+	return Stack[top--];
+}
+
+int main()
+{
+	
+	init_stack();
+	push(3);
+	push(2);
+	push(1);
+	printf("%d\n", pop());
+	printf("%d\n", pop());
+	printf("%d\n", pop());
+	printf("%d\n", pop());
+
+}
+
+===================    큐    =======================
+================================================
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+//스택
+//#define STACK_SIZE 5 
+//int top;
+//int Stack[STACK_SIZE];
+
+//큐
+#define QUEUE_SIZE 5 
+int front, rear;
+int Queue[QUEUE_SIZE];
+
+void init_queue()
+{
+	front = rear = 0;
+}
+
+void clear_queue()
+{
+	front = rear;
+}
+
+void put(int data) //데이터 넣을 때
+{
+	if (rear + 1 == front)
+	{
+		puts("\n Queue Overflow");
+		return; // void 함수 그냥 종료
+	}
+
+	Queue[rear++] = data;
+
+
+	rear = rear % QUEUE_SIZE;
+
+	//if (rear == 5)
+	//{
+	//	rear = 0;
+	//}
+	
+	//if (rear = ++rear % QUEUE_SIZE);
+	
+}
+
+int get(void) //꺼낼 때
+{
+	int save;
+
+	if (rear  == front)
+	{
+		puts("\n 비었음");
+		return -1;
+	}
+
+	save = front;
+	front = ++front % 5;
+	
+	return Queue[save];
+}
+
+main()
+{
+	init_queue();
+	put(1);
+	put(2);
+	put(3);
+	put(4);
+
+	printf("- %d ", get()); //1
+	printf("- %d ", get()); //2
+	printf("- %d ", get()); //3
+	
+	
+	
+	put(5);
+	printf("rear: %d ", rear);
+
+	put(6);
+	put(7);
+	put(8); //오버플로우 발생 
+	
+	printf("- %d ", get()); //4
+	printf("- %d ", get()); //5
+	printf("- %d ", get()); //6
+	printf("- %d ", get()); //7
+	printf("- %d ", get()); //3 이 아니고 비어있어야 한다.
+
+}
+
+

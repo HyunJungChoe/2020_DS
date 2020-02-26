@@ -1,0 +1,135 @@
+현재 접속 중인 웹 페이지: about:blank
+=====================
+1. URL 접속
+2. 방문 기록 보기
+3. 뒤로
+4. 앞으로
+0. 종료
+=====================
+메뉴를 입력하세요:1
+
+1. URL 접속을 선택 하셨습니다.
+원하시는 웹 주소를 입력해 주세요: aaa.com
+
+2. 방문기록 보기를 선택 하셨습니다.
+ 뒤로 이동 할 수 있는 목록
+===========================
+1. bbb.com
+2. aaa.com
+
+
+현재 접속중인 웹 페이지: bbb.com
+=====================
+1. URL 접속
+2. 방문 기록 보기
+3. 뒤로
+4. 앞으로
+0. 종료
+=====================
+메뉴를 입력하세요:
+
+-----------------------------------------------------------------------------------------
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define STACK_SIZE 50
+int top;
+char Stack[STACK_SIZE];
+
+void init_stack()
+{
+	top = -1;
+}
+
+void push(char data)
+{
+	
+	
+	if (top >= STACK_SIZE - 1)
+	{
+		puts("x");
+		return;
+	}
+	Stack[++top] = data;
+
+}
+
+void pop(void)
+{
+	if (top <= -1)
+	{
+		puts("X");
+		return -1;
+	}
+	return Stack[top--];
+}
+
+
+void view() //방문기록 보기
+{
+	
+	printf("%s\n", Stack[0]);
+	
+}
+
+int menu(void)
+{
+	int a;
+
+	printf("\n\n\n\n");
+
+	printf("=========================\n");
+	printf("1. URL 접속     ");  //push
+	printf("2. 방문 기록 보기      ");
+	printf("3. 뒤로     ");   // top +1
+	printf("4. 앞으로    "); // top -1
+	printf("0. EXIT   \n");
+	printf("# 번호를 선택하시오 :  ");
+	scanf("%d", &a);
+
+	return a;
+
+}
+
+int main()
+{
+	int a; //메뉴 스위치 
+	int t = 1; //종료 조건 
+	char web;
+	init_stack();
+
+	while (t) {
+		a = menu();
+		switch (a)
+		{
+			case 1:
+			
+				printf("\n1. URL 접속을 선택하셨습니다.\n 원하시는 웹 주소를 입력해주세요:  ");
+				scanf("%s", &web);
+				push(web);
+				continue;
+
+			case 2:
+				printf("\n2. 방문 기록 보기를 선택하셨습니다.\n --목록-- \n  ");
+				view();
+
+				continue;
+
+			case 3:
+				continue;
+
+
+			case 4:
+				continue;
+
+		case 0:
+
+			puts("종료");
+			t = 0;
+			break;
+		}
+	}
+
+	
+}
