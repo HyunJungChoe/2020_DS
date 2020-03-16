@@ -1,0 +1,32 @@
+
+#include<stdio.h>
+
+#define list_entry(ptr, type, member) \
+ ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member)))
+//list_entry를 이용하여 다음 구조체의 각멤버를 이용해
+//구조체의 첫 주소를 출력하는 main함수를 만드시오
+
+struct engine{
+ char a[5];
+ double b;
+ int c[3];
+};
+
+struct car{
+ char x[10];
+ int y;
+ struct engine z;
+};
+
+void main()
+{
+ struct car bm ;
+
+ 
+ printf("&bm : [ %x ]\n", &bm);
+ printf("&bm : [ %x ]\n", list_entry(bm.x, struct car, x));
+
+
+
+
+}

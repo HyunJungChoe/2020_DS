@@ -1,0 +1,196 @@
+
+#include<stdio.h>
+#include<Windows.h>
+#include<conio.h>
+#include<stdlib.h>
+
+
+typedef struct pnt {
+
+	SHORT x;
+	SHORT y;
+	/*
+	int x;
+
+	int y;
+	*/
+
+}pointer;
+
+#define col GetStdHandle(STD_OUTPUT_HANDLE)
+
+#define RED SetConsoleTextAttribute( col,0x000c ) //빨간색 
+
+#define BLUE SetConsoleTextAttribute( col,0x0001 | 0x0008) //파란색 
+
+#define HIGH SetConsoleTextAttribute( col,0x00a) // 연두
+
+#define WHITE SetConsoleTextAttribute( col,0x000f) // 흰색
+
+#define SKY SetConsoleTextAttribute( col, 0x000b) //하늘색
+
+#define YELLOW SetConsoleTextAttribute( col, 0x000e) //노란색
+
+#define HIG SetConsoleTextAttribute( col, 0x000d) //형광
+
+#define VIO SetConsoleTextAttribute( col,0x0001 | 0x0008 |0x000c) //보라
+
+
+
+#define ROW_SIZE 10
+
+#define COL_SIZE 19
+
+
+
+int sadari[ROW_SIZE][COL_SIZE] = {
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1 },
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1 },
+
+	{ 1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,1 },
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1 },
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1 },
+
+	{ 1,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,1 },
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1 },
+
+	{ 1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,1 },
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1 },
+
+	{ 1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1 },
+
+};
+
+
+
+void removeCursor(void)
+
+{
+
+
+	CONSOLE_CURSOR_INFO curInfo;
+
+	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+
+	curInfo.bVisible = 0;
+
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+
+}
+
+
+
+pointer getCursor(void)
+
+{
+
+	pointer curPoint;
+
+	CONSOLE_SCREEN_BUFFER_INFO curInfo;
+
+
+
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+
+	curPoint.x = curInfo.dwCursorPosition.X;
+
+	curPoint.y = curInfo.dwCursorPosition.Y;
+
+
+
+	return curPoint;
+
+}
+
+void setCursor(int x, int y)
+
+{
+
+	COORD pos = { x, y };
+
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+
+}
+
+
+typedef struct _point {
+	SHORT x;
+	SHORT y;
+} point;
+
+
+
+void sadaripeek()
+{
+	
+	int i, j,n;
+
+	for (i=0;i<ROW_SIZE;i++)
+	{
+		for (j = 0; j < COL_SIZE; j++)
+		{
+			if (sadari[i][j] == 1)
+				printf("■ ");
+			else
+				printf("   ");
+
+		}printf("\n");
+	}
+}
+
+//printf("■");
+//printf("□");
+
+#if 1
+
+main()
+{
+	int c = 0;
+	
+	pointer z;  //pointer?
+	sadaripeek();
+	z = getCursor();
+
+	//printf("%d %d\n", z.x, z.y);
+	sadaripeek();
+
+	while (1)
+	{
+		
+
+		//c= _getch();
+		//printf("-%d-\n", c);
+		if (_kbhit() != 0) //(c == 0xE0 || c == 0)
+		{
+			c = _getch();
+			if (c == '1')
+				printf("1번 \n");
+		
+		}	
+	}
+
+	
+
+
+}
+
+#endif
+
+//#if 0
+//
+//main()
+//{
+//	pointer z;  //pointer?
+//	sadaripeek();
+//	z = getCursor();
+//
+//	printf("%d %d\n", z.x, z.y);
+//
+//}
+//#endif
