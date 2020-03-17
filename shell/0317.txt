@@ -1,0 +1,13 @@
+test = com
+set | grop test
+^set^env
+env | grep test
+pstree -p | grep bash
+
+echo $$
+echo $!
+echo $?
+
+bash
+pstree -p | grep bash
+set | grep test
