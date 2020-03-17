@@ -1,0 +1,194 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <Windows.h>
+#include<conio.h>
+
+typedef struct pnt{
+ int x;
+ int y;
+}pointer;
+
+#define col GetStdHandle(STD_OUTPUT_HANDLE)
+#define RED SetConsoleTextAttribute( col,0x000c ) //빨간색
+#define BLUE SetConsoleTextAttribute( col,0x0001 | 0x0008) //파란색
+#define HIGH SetConsoleTextAttribute( col,0x00a) // 연두
+#define WHITE SetConsoleTextAttribute( col,0x000f) // 흰색
+#define SKY SetConsoleTextAttribute( col, 0x000b) //하늘색
+#define YELLOW SetConsoleTextAttribute( col, 0x000e) //노란색
+#define HIG SetConsoleTextAttribute( col, 0x000d) //형광
+#define VIO SetConsoleTextAttribute( col,0x0001 | 0x0008 |0x000c) //보라
+
+
+#define ROW_SIZE 10
+#define COL_SIZE 19
+
+int sadari[ROW_SIZE][COL_SIZE]={
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1},
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1},
+ {1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,1},
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1},
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1},
+ {1,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,1},
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1},
+ {1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,1},
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,1,1,1},
+ {1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1},
+};
+
+
+void removeCursor(void)
+{
+ CONSOLE_CURSOR_INFO curInfo;
+ GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&curInfo);
+ curInfo.bVisible=0;
+ SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE),&curInfo);
+}
+
+
+pointer getCursor(void)
+{
+ pointer curPoint;
+ CONSOLE_SCREEN_BUFFER_INFO curInfo;
+
+ GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+ curPoint.x=curInfo.dwCursorPosition.X;
+ curPoint.y=curInfo.dwCursorPosition.Y;
+
+ return curPoint;
+}
+
+void setCursor(int x, int y)
+{
+ COORD pos={x, y};
+ SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),pos);
+}
+
+
+void dp()
+{
+ int rx;
+ int cx;
+
+ for(rx=0;rx<ROW_SIZE;rx++)
+ {
+  for(cx=0;cx<COL_SIZE; cx++)
+  {
+   setCursor(cx*2,rx );
+   if(sadari[rx][cx] !=0)
+    printf("■");
+   else
+    printf("  ");
+
+  }
+ }
+}
+
+void drawPosition(int rx, int cx)
+{
+
+ if(sadari[rx][cx] !=0)
+ {
+  setCursor(cx*2,rx );
+  RED;
+  printf("■");
+ }
+ else
+ {
+  printf("  ");
+ }
+ WHITE;
+ setCursor(0,12);
+}
+
+int right(int rx, int cx)
+{
+
+ return sadari[rx][cx+1];
+}
+
+int left(int rx, int cx)
+{
+ if(cx==0)
+  return 0;
+ return sadari[rx][cx-1];
+}
+
+int down(int rx, int cx)
+{
+ return sadari[rx+1][cx];
+}
+
+int direction3(int rx, int cx)
+{
+ if(right(rx,cx) !=0)
+  return 1;
+ if(left(rx,cx) !=0)
+  return 2;
+ if(down(rx,cx) !=0)
+  return 3;
+}
+int startPosition(int rx, int cx)
+{
+ int dir;
+
+ dir = direction3(rx, cx);//갈 방향에 따라서 오른쪽 right,left, down
+
+ while(rx<=ROW_SIZE)
+ {
+  switch(dir)
+  {
+  case 1: //right
+   do
+   {
+    drawPosition(rx, ++cx);
+    Sleep(500);
+   }while(sadari[rx+1][cx]==0);
+   dir=3;
+   break;
+  case 2: //left
+
+   do
+   {
+    drawPosition(rx, --cx);
+    Sleep(500);
+   }while(sadari[rx-1][cx]==0);
+   
+   break;
+  case 3:
+
+   do{
+    drawPosition(++rx, cx);//아래 방향으로 간다
+    Sleep(500);
+    if(sadari[rx][cx+1]!=0 &&cx<COL_SIZE)//오른쪽이 1이면
+    {
+     dir=1;
+     break;
+    }
+    else if(cx>0 && sadari[rx][cx-1]!=0 )
+    {
+     dir=2;
+     break;
+
+    }
+   }while(1);
+   break;
+  }
+ }
+
+
+}
+
+main()
+{
+
+ removeCursor();
+
+ dp();//2차원배열을 보고 사다리 그리기
+
+
+ startPosition(0,0);//drawPosition(1,0);// 2번째 보여줄 그림
+
+ setCursor(0,12);//마지막 라인에 보여주기
+}
+
+ 
